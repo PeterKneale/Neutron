@@ -14,7 +14,9 @@
     "ServiceStack.Common.Core": "1.0.*",
     "ServiceStack.OrmLite.Sqlite.Core": "1.0.30",
     "ServiceStack.OrmLite.PostgreSQL.Core": "1.0.30",
-    "ServiceStack.RabbitMq.Core": "1.0.30"
+    "ServiceStack.RabbitMq.Core": "1.0.30",
+    "Api": "1.0.0-*",
+    "Api.Models": "1.0.0-*"
   },
   "frameworks": {
     "netcoreapp1.1": {

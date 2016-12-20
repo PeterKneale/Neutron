@@ -1,8 +1,7 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "debugType": "portable",
-    "emitEntryPoint": true
+    "debugType": "portable"
   },
   "dependencies": {
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
@@ -15,9 +14,6 @@
     "ServiceStack.OrmLite.Sqlite.Core": "1.0.30",
     "ServiceStack.OrmLite.PostgreSQL.Core": "1.0.30",
     "ServiceStack.RabbitMq.Core": "1.0.30",
-    "Services.Tenant": "1.0.0-*",
-    "Services.Tenant.Models": "1.0.0-*",
-    "Services.User": "1.0.0-*",
     "Services.User.Models": "1.0.0-*"
   },
   "frameworks": {

@@ -1,0 +1,25 @@
+{
+    "version": "0.1.0",
+    "command": "dotnet",
+    "isShellCommand": true,
+    "args": [],
+    "tasks": [
+        {
+            "taskName": "build",
+            "args": [
+                "Api.Host"
+            ], 
+            "showOutput": "always",
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+         {
+            "taskName": "build services",
+            "args": [
+                "Services.Host"
+            ], 
+            "showOutput": "always",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

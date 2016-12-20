@@ -1,5 +1,6 @@
 using ServiceStack;
 using ServiceStack.OrmLite;
+using Api.Models;
 
 namespace Api
 {
@@ -14,12 +15,7 @@ namespace Api
 
         public CreateAccountResponse Post(CreateAccount request)
         {
-            var id = Db.Insert(new AccountData { Name = request.Name }, selectIdentity: true);
-
-            _bus.Publish<AccountCreatedEvent>(new AccountCreatedEvent { Id = id });
-            
-            var model = Db.SingleById<AccountData>(id).ConvertTo<AccountModel>();
-            return new CreateAccountResponse { Account = model };
+            return new CreateAccountResponse { };
         }
     }
 }

@@ -14,8 +14,8 @@
     "ServiceStack.OrmLite.Sqlite.Core": "1.0.30",
     "ServiceStack.OrmLite.PostgreSQL.Core": "1.0.30",
     "ServiceStack.RabbitMq.Core": "1.0.30",
-    "Service.Tenant.Models": "1.0.0-*",
-    "Service.User.Models": "1.0.0-*",
+    "Services.Tenant.Models": "1.0.0-*",
+    "Services.User.Models": "1.0.0-*",
     "Api.Models": "1.0.0-*"
   },
   "frameworks": {

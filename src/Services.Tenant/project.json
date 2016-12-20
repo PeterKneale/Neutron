@@ -6,7 +6,7 @@
   "dependencies": {
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Service.Tenant.Models": "1.0.0-*",
+    "Services.Tenant.Models": "1.0.0-*",
     "ServiceStack.Client.Core": "1.0.*",
     "ServiceStack.Common.Core": "1.0.*",
     "ServiceStack.Core": "1.0.*",

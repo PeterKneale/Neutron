@@ -20,4 +20,9 @@ namespace Api.Models
     {
         public string Result { get; set; }
     }
+
+    public class AccountCreatedEvent
+    {
+
+    }
 }
