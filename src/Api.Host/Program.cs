@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Funq;
 using ServiceStack;
 using ServiceStack.Logging;
+using ServiceStack.Messaging;
+using ServiceStack.RabbitMq;
 
 namespace Api.Host
 {
@@ -61,7 +63,10 @@ namespace Api.Host
 
             SetConfig(new HostConfig { DebugMode = true });
             
-            container.RegisterAs<Bus,IBus>();
+            var mqServer = new RabbitMqServer("192.168.99.100:32782") { DisablePriorityQueues = true };
+            mqServer.Start();
+            container.Register<IMessageService>(c => mqServer);
+            container.RegisterAs<Bus, IBus>().ReusedWithin(ReuseScope.None);
 
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
             {

@@ -1,5 +1,6 @@
 using ServiceStack;
 using Api.Models;
+using Services.Tenant.Models;
 
 namespace Api
 {
@@ -14,6 +15,8 @@ namespace Api
 
         public CreateAccountResponse Post(CreateAccount request)
         {
+            var createAccountResponse = _bus.Send<CreateTenant, CreateTenantResponse>(new CreateTenant{ Name = request.Name });
+
             return new CreateAccountResponse { };
         }
     }

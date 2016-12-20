@@ -79,7 +79,7 @@ namespace Services.Host
             container.Register<IDbConnectionFactory>(c => dbFactory);
 
             // Rabbit
-            var mqServer = new RabbitMqServer("192.168.99.100:32776")
+            var mqServer = new RabbitMqServer("192.168.99.100:32782")
             {
                 DisablePriorityQueues = true
             };
