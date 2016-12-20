@@ -1,8 +1,9 @@
-﻿using ServiceStack;
+﻿using System;
+using ServiceStack;
 using ServiceStack.Logging;
 using ServiceStack.Messaging;
 
-namespace Services.Tenant
+namespace Services.Common
 {
     public interface IBus
     {
@@ -15,6 +16,7 @@ namespace Services.Tenant
         private ILog _log = LogManager.GetLogger(typeof(Bus));
         private readonly IMessageQueueClient _mqClient;
         private readonly IMessageProducer _mqProducer;
+        
         public Bus(IMessageService messageService)
         {
             _mqClient = messageService.CreateMessageQueueClient();
@@ -23,21 +25,23 @@ namespace Services.Tenant
 
         public void Publish<TEvent>(TEvent message)
         {
-            _log.Info($"publishing {message.SerializeToString()}");
+             _log.Debug($"Publishing to {QueueNames<TEvent>.In}");
             _mqProducer.Publish<TEvent>(message);
         }
 
         public TResponse Send<TRequest, TResponse>(TRequest request)
         {
-            _log.Info($"Sending {request.SerializeToString()}");
             var queue = _mqClient.GetTempQueueName();
-
-            _log.Info($"to queue {queue}");
+            
+            _log.Debug($"Sending to {QueueNames<TRequest>.In} and will receive reply on {queue}");
             _mqClient.Publish(new Message<TRequest>(request) { ReplyTo = queue });
 
+            _log.Debug($"Waiting for reply.");
             var response = _mqClient.Get<TResponse>(queue);
-            _log.Info($" got response {response.SerializeToString()}");
             _mqClient.Ack(response);
+            
+            _log.Debug($"Reply received and acknowledged.");
+
             return response.GetBody();
         }
     }

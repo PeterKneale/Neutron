@@ -8,16 +8,16 @@
             "taskName": "build",
             "args": [
                 "Api.Host"
-            ], 
+            ],
             "showOutput": "always",
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
         },
-         {
-            "taskName": "build services",
+        {
+            "taskName": "build",
             "args": [
                 "Services.Host"
-            ], 
+            ],
             "showOutput": "always",
             "problemMatcher": "$msCompile"
         }

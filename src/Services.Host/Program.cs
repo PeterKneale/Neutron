@@ -8,6 +8,7 @@ using ServiceStack;
 using ServiceStack.OrmLite;
 using ServiceStack.Logging;
 using ServiceStack.Data;
+using Services.Common;
 using Services.Tenant;
 using Services.Tenant.Models;
 using Services.User;
@@ -62,7 +63,8 @@ namespace Services.Host
         public override void Configure(Container container)
         {
             var log = LogManager.GetLogger(typeof(AppHost));
-            LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            //LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            LogManager.LogFactory = new DebugLogFactory(debugEnabled:true);
 
             // HTTP 
             Plugins.Add(new PostmanFeature());
@@ -79,18 +81,22 @@ namespace Services.Host
             container.Register<IDbConnectionFactory>(c => dbFactory);
 
             // Rabbit
-            var mqServer = new RabbitMqServer("192.168.99.100:32782")
+            var mqServer = new RabbitMqServer("192.168.99.100:32771")
             {
                 DisablePriorityQueues = true
             };
 
-            // Message Handlers
+            // Message Handlers - Tenant Service
             mqServer.RegisterHandler<CreateTenant>(this.ExecuteMessage, noOfThreads: 4);
             mqServer.RegisterHandler<DeleteTenant>(this.ExecuteMessage, noOfThreads: 4);
             mqServer.RegisterHandler<DeleteTenants>(this.ExecuteMessage, noOfThreads: 4);
             mqServer.RegisterHandler<GetTenant>(this.ExecuteMessage, noOfThreads: 4);
             mqServer.RegisterHandler<GetTenants>(this.ExecuteMessage, noOfThreads: 4);
             mqServer.RegisterHandler<TenantCreatedEvent>(this.ExecuteMessage, noOfThreads: 4);
+            
+            // Message Handlers - User Service
+            mqServer.RegisterHandler<CreateUser>(this.ExecuteMessage, noOfThreads: 4);
+            mqServer.RegisterHandler<UserCreatedEvent>(this.ExecuteMessage, noOfThreads: 4);
             
             mqServer.Start();
             container.Register<IMessageService>(c => mqServer);

@@ -11,11 +11,7 @@
     "ServiceStack.Text.Core": "1.0.*",
     "ServiceStack.Client.Core": "1.0.*",
     "ServiceStack.Common.Core": "1.0.*",
-    "ServiceStack.RabbitMq.Core": "1.0.30",
-    "Services.Common": "1.0.0-*",
-    "Services.Tenant.Models": "1.0.0-*",
-    "Services.User.Models": "1.0.0-*",
-    "Api.Models": "1.0.0-*"
+    "ServiceStack.RabbitMq.Core": "1.0.30"
   },
   "frameworks": {
     "netcoreapp1.1": {

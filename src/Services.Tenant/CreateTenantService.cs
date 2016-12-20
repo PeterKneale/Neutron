@@ -2,6 +2,7 @@ using Services.Tenant.Models;
 using ServiceStack;
 using ServiceStack.Messaging;
 using ServiceStack.OrmLite;
+using Services.Common;
 
 namespace Services.Tenant
 {

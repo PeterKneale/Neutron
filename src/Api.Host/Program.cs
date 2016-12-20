@@ -8,6 +8,7 @@ using ServiceStack;
 using ServiceStack.Logging;
 using ServiceStack.Messaging;
 using ServiceStack.RabbitMq;
+using Services.Common;
 
 namespace Api.Host
 {
@@ -56,17 +57,16 @@ namespace Api.Host
         public override void Configure(Container container)
         {
             var log = LogManager.GetLogger(typeof(AppHost));            
-            LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            //LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            LogManager.LogFactory = new DebugLogFactory(debugEnabled:true);
 
             Plugins.Add(new PostmanFeature());
             Plugins.Add(new CorsFeature());
 
             SetConfig(new HostConfig { DebugMode = true });
             
-            var mqServer = new RabbitMqServer("192.168.99.100:32782") { DisablePriorityQueues = true };
-            mqServer.Start();
-            container.Register<IMessageService>(c => mqServer);
-            container.RegisterAs<Bus, IBus>().ReusedWithin(ReuseScope.None);
+            container.Register<IMessageService>(c => new RabbitMqServer("192.168.99.100:32771"));
+            container.RegisterAs<Bus, IBus>();
 
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
             {

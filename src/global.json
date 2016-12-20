@@ -3,6 +3,7 @@
         "Api", 
         "Api.Host",
         "Api.Models",
+        "Services.Common",
         "Services.Host",
         "Services.Tenant",
         "Services.Tenant.Models",
