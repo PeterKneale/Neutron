@@ -51,7 +51,7 @@ namespace Api.Host
 
     public class AppHost : AppHostBase
     {
-        public AppHost() : base("Account", typeof(ApiAssembly).GetAssembly()) { }
+        public AppHost() : base("api", typeof(ApiAssembly).GetAssembly()) { }
 
         public override void Configure(Container container)
         {

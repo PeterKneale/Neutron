@@ -53,7 +53,7 @@ namespace Services.Host
 
     public class AppHost : AppHostBase
     {
-        public AppHost() : base("Account", typeof(TenantService).GetAssembly(), typeof(UserService).GetAssembly()) { }
+        public AppHost() : base("services", typeof(TenantService).GetAssembly(), typeof(UserService).GetAssembly()) { }
 
         public override void Configure(Container container)
         {
