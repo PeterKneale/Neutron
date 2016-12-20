@@ -1,5 +1,4 @@
 using ServiceStack;
-using ServiceStack.OrmLite;
 using Api.Models;
 
 namespace Api

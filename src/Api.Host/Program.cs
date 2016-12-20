@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Funq;
 using ServiceStack;
-using ServiceStack.OrmLite;
 using ServiceStack.Logging;
-using ServiceStack.Data;
 
 namespace Api.Host
 {
@@ -55,17 +53,15 @@ namespace Api.Host
 
         public override void Configure(Container container)
         {
-            var log = LogManager.GetLogger(typeof(AppHost));
-            
+            var log = LogManager.GetLogger(typeof(AppHost));            
+            LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+
             Plugins.Add(new PostmanFeature());
             Plugins.Add(new CorsFeature());
 
-            SetConfig(new HostConfig
-            {
-                DebugMode = true
-            });
-
-            LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            SetConfig(new HostConfig { DebugMode = true });
+            
+            container.RegisterAs<Bus,IBus>();
 
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
             {

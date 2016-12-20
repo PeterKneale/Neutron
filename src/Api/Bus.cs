@@ -15,6 +15,7 @@ namespace Api
         private ILog _log = LogManager.GetLogger(typeof(Bus));
         private readonly IMessageQueueClient _mqClient;
         private readonly IMessageProducer _mqProducer;
+        
         public Bus(IMessageService messageService)
         {
             _mqClient = messageService.CreateMessageQueueClient();

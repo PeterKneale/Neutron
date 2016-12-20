@@ -9,7 +9,11 @@ using ServiceStack.OrmLite;
 using ServiceStack.Logging;
 using ServiceStack.Data;
 using Services.Tenant;
+using Services.Tenant.Models;
 using Services.User;
+using Services.User.Models;
+using ServiceStack.Messaging;
+using ServiceStack.RabbitMq;
 
 namespace Services.Host
 {
@@ -58,32 +62,47 @@ namespace Services.Host
         public override void Configure(Container container)
         {
             var log = LogManager.GetLogger(typeof(AppHost));
-            
-            Plugins.Add(new PostmanFeature());
-            Plugins.Add(new CorsFeature());
-
-            SetConfig(new HostConfig
-            {
-                DebugMode = true
-            });
-
             LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
 
+            // HTTP 
+            Plugins.Add(new PostmanFeature());
+            Plugins.Add(new CorsFeature());
+            SetConfig(new HostConfig { DebugMode = true });
+
+            // DB
             var dbFactory = new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider)
             {
                 AutoDisposeConnection = false
             };
-            
             dbFactory.OpenDbConnection().CreateTableIfNotExists<TenantData>();
             dbFactory.OpenDbConnection().CreateTableIfNotExists<UserData>();
-
             container.Register<IDbConnectionFactory>(c => dbFactory);
 
+            // Rabbit
+            var mqServer = new RabbitMqServer("192.168.99.100:32776")
+            {
+                DisablePriorityQueues = true
+            };
+
+            // Message Handlers
+            mqServer.RegisterHandler<CreateTenant>(this.ExecuteMessage, noOfThreads: 4);
+            mqServer.RegisterHandler<DeleteTenant>(this.ExecuteMessage, noOfThreads: 4);
+            mqServer.RegisterHandler<DeleteTenants>(this.ExecuteMessage, noOfThreads: 4);
+            mqServer.RegisterHandler<GetTenant>(this.ExecuteMessage, noOfThreads: 4);
+            mqServer.RegisterHandler<GetTenants>(this.ExecuteMessage, noOfThreads: 4);
+            mqServer.RegisterHandler<TenantCreatedEvent>(this.ExecuteMessage, noOfThreads: 4);
+            
+            mqServer.Start();
+            container.Register<IMessageService>(c => mqServer);
+            container.RegisterAs<Bus, IBus>().ReusedWithin(ReuseScope.None);
+
+            // Errors
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
             {
-                log.Error($"Error: {exception.Message}. {exception.StackTrace}.", exception);
+                AppHost.Instance.Resolve<ILog>().Error($"Error: {exception.Message}. {exception.StackTrace}.", exception);
                 return null;
             });
+            
         }
     }
 }
