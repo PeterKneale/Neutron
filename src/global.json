@@ -1,0 +1,15 @@
+{
+    "projects": [
+        "Api", 
+        "Api.Host",
+        "Api.Models",
+        "Services.Host",
+        "Services.Tenant",
+        "Services.Tenant.Models",
+        "Services.User",
+        "Services.User.Models"
+    ],
+  "sdk": {
+    "version": "1.0.0-preview2-1-003177"
+  }
+}
