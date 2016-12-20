@@ -24,5 +24,10 @@ namespace Services.Tenant
             var model = Db.SingleById<TenantData>(id).ConvertTo<TenantModel>();
             return new CreateTenantResponse { Tenant = model };
         }
+        
+        public void Post(TenantCreatedEvent request)
+        {
+            
+        }
     }
 }

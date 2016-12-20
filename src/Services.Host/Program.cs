@@ -63,9 +63,8 @@ namespace Services.Host
         public override void Configure(Container container)
         {
             var log = LogManager.GetLogger(typeof(AppHost));
-            //LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
-            LogManager.LogFactory = new DebugLogFactory(debugEnabled:true);
-
+            LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            
             // HTTP 
             Plugins.Add(new PostmanFeature());
             Plugins.Add(new CorsFeature());
@@ -81,7 +80,7 @@ namespace Services.Host
             container.Register<IDbConnectionFactory>(c => dbFactory);
 
             // Rabbit
-            var mqServer = new RabbitMqServer("192.168.99.100:32771")
+            var mqServer = new RabbitMqServer("192.168.99.100:32789")
             {
                 DisablePriorityQueues = true
             };

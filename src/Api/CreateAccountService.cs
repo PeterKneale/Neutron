@@ -17,10 +17,12 @@ namespace Api
 
         public CreateAccountResponse Post(CreateAccount request)
         {
-            var createTenantResponse = _bus.Send<CreateTenant, CreateTenantResponse>(new CreateTenant{ Name = request.Name });
-            var createUserResponse = _bus.Send<CreateUser, CreateUserResponse>(new CreateUser{ FirstName = request.FirstName, LastName = request.LastName });
+            var tenantResponse = _bus.Send<CreateTenant, CreateTenantResponse>(new CreateTenant{ Name = request.Name });
+            var userResponse = _bus.Send<CreateUser, CreateUserResponse>(new CreateUser{ FirstName = request.FirstName, LastName = request.LastName });
+            var accountId = tenantResponse.Tenant.Id;
+            var userId = userResponse.User.Id;
             
-            return new CreateAccountResponse { };
+            return new CreateAccountResponse {AccountId = accountId, UserId = userId };
         }
     }
 }

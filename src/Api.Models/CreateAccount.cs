@@ -18,6 +18,8 @@ namespace Api.Models
 
     public class CreateAccountResponse
     {
+        public long AccountId { get; set; }
+        public long UserId { get; set; }
         public string Result { get; set; }
     }
 

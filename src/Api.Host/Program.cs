@@ -57,15 +57,14 @@ namespace Api.Host
         public override void Configure(Container container)
         {
             var log = LogManager.GetLogger(typeof(AppHost));            
-            //LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
-            LogManager.LogFactory = new DebugLogFactory(debugEnabled:true);
-
+            LogManager.LogFactory = new ConsoleLogFactory(debugEnabled: true);
+            
             Plugins.Add(new PostmanFeature());
             Plugins.Add(new CorsFeature());
 
             SetConfig(new HostConfig { DebugMode = true });
             
-            container.Register<IMessageService>(c => new RabbitMqServer("192.168.99.100:32771"));
+            container.Register<IMessageService>(c => new RabbitMqServer("192.168.99.100:32789"));
             container.RegisterAs<Bus, IBus>();
 
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
