@@ -71,10 +71,9 @@ namespace Services.Host
             SetConfig(new HostConfig { DebugMode = true });
 
             // DB
-            var dbFactory = new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider)
-            {
-                AutoDisposeConnection = false
-            };
+            var dbFactory = new OrmLiteConnectionFactory(Env.Postgres, PostgreSqlDialect.Provider);
+            //var dbFactory = new OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider);
+            
             dbFactory.OpenDbConnection().CreateTableIfNotExists<TenantData>();
             dbFactory.OpenDbConnection().CreateTableIfNotExists<UserData>();
             container.Register<IDbConnectionFactory>(c => dbFactory);
@@ -99,7 +98,7 @@ namespace Services.Host
             
             mqServer.Start();
             container.Register<IMessageService>(c => mqServer);
-            container.RegisterAs<Bus, IBus>().ReusedWithin(ReuseScope.None);
+            container.RegisterAs<Bus, IBus>();
 
             // Errors
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
