@@ -5,6 +5,18 @@ using ServiceStack.Messaging;
 
 namespace Services.Common
 {
+    /*
+    export PORT=8082
+    export RABBIT_HOST=192.168.99.100
+    export RABBIT_PORT=32789
+    */   
+    public class Env
+    {
+        public static int Port { get { return int.Parse(Environment.GetEnvironmentVariable("PORT")); } }
+        public static string Rabbit_Host { get { return Environment.GetEnvironmentVariable("RABBIT_HOST"); } }
+        public static int Rabbit_Port { get { return int.Parse(Environment.GetEnvironmentVariable("RABBIT_PORT")); } }
+    }
+
     public interface IBus
     {
         void Publish<TEvent>(TEvent message);
@@ -14,14 +26,11 @@ namespace Services.Common
     public class Bus : IBus
     {
         private ILog _log = LogManager.GetLogger(typeof(Bus));
-        //private readonly IMessageQueueClient _mqClient;
         private readonly IMessageService _messageService;
         
         public Bus(IMessageService messageService)
         {
             _messageService = messageService;
-            // _mqClient = messageService.CreateMessageQueueClient();
-            // _mqProducer = messageService.CreateMessageProducer();
         }
 
         public void Publish<TEvent>(TEvent message)

@@ -26,7 +26,7 @@ namespace Services.Host
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:8081/")
+                .UseUrls($"http://localhost:{Env.Port}/")
                 .Build();
 
             host.Run();
@@ -80,7 +80,7 @@ namespace Services.Host
             container.Register<IDbConnectionFactory>(c => dbFactory);
 
             // Rabbit
-            var mqServer = new RabbitMqServer("192.168.99.100:32789")
+            var mqServer = new RabbitMqServer($"{Env.Rabbit_Host}:{Env.Rabbit_Port}")
             {
                 DisablePriorityQueues = true
             };

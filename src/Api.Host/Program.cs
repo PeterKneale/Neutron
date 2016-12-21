@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +21,7 @@ namespace Api.Host
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:8082/")
+                .UseUrls($"http://localhost:{Env.Port}/")
                 .Build();
 
             host.Run();
@@ -64,7 +65,7 @@ namespace Api.Host
 
             SetConfig(new HostConfig { DebugMode = true });
             
-            container.Register<IMessageService>(c => new RabbitMqServer("192.168.99.100:32789"));
+            container.Register<IMessageService>(c => new RabbitMqServer($"{Env.Rabbit_Host}:{Env.Rabbit_Port}"));
             container.RegisterAs<Bus, IBus>();
 
             this.ServiceExceptionHandlers.Add((httpReq, request, exception) =>
